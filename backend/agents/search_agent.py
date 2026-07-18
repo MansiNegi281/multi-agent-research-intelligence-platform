@@ -2,6 +2,10 @@ import arxiv
 
 
 class SearchAgent:
+
+    def __init__(self):
+        self.client = arxiv.Client()
+
     def search_papers(self, query: str, max_results: int = 5):
         """
         Search arXiv for research papers.
@@ -15,7 +19,7 @@ class SearchAgent:
 
         papers = []
 
-        for result in search.results():
+        for result in self.client.results(search):
             papers.append(
                 {
                     "title": result.title,
