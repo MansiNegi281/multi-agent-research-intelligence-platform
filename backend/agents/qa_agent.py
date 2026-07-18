@@ -1,20 +1,17 @@
 from google import genai
-
 from langchain.memory import ConversationBufferMemory
 
 from backend.config import GOOGLE_API_KEY
-from backend.agents.retrieval_agent import RetrievalAgent
-
 
 class QAAgent:
 
-    def __init__(self):
+    def __init__(self, retriever):
 
         self.client = genai.Client(
             api_key=GOOGLE_API_KEY
         )
 
-        self.retriever = RetrievalAgent()
+        self.retriever = retriever
 
         self.memory = ConversationBufferMemory(
             return_messages=False

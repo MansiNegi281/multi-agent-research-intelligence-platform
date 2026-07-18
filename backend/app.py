@@ -29,7 +29,7 @@ search_agent = SearchAgent()
 reader = ReaderAgent()
 embedding_agent = EmbeddingAgent()
 retriever = RetrievalAgent()
-qa_agent = QAAgent()
+qa_agent = QAAgent(retriever)
 summary_agent = SummaryAgent()
 compare_agent = CompareAgent()
 # =====================================================
