@@ -6,15 +6,9 @@ class RetrievalAgent:
 
     def __init__(self):
 
-        # Embedding model
-        self.model = SentenceTransformer(
-            "all-MiniLM-L6-v2"
-        )
-
-        # Cross Encoder for re-ranking
-        self.reranker = CrossEncoder(
-            "cross-encoder/ms-marco-MiniLM-L-6-v2"
-        )
+        # Lazy-loaded models
+        self.model = None
+        self.reranker = None
 
         # ChromaDB
         self.client = chromadb.PersistentClient(
@@ -25,6 +19,38 @@ class RetrievalAgent:
             name="research_papers"
         )
 
+    # ---------------------------------------------------
+    # Lazy load embedding model
+    # ---------------------------------------------------
+
+    def get_embedding_model(self):
+
+        if self.model is None:
+
+            self.model = SentenceTransformer(
+                "all-MiniLM-L6-v2"
+            )
+
+        return self.model
+
+    # ---------------------------------------------------
+    # Lazy load CrossEncoder
+    # ---------------------------------------------------
+
+    def get_reranker(self):
+
+        if self.reranker is None:
+
+            self.reranker = CrossEncoder(
+                "cross-encoder/ms-marco-MiniLM-L-6-v2"
+            )
+
+        return self.reranker
+
+    # ---------------------------------------------------
+    # Retrieve Documents
+    # ---------------------------------------------------
+
     def retrieve(
         self,
         query: str,
@@ -32,6 +58,7 @@ class RetrievalAgent:
     ):
 
         if self.collection.count() == 0:
+
             return {
                 "documents": [],
                 "metadata": [],
@@ -39,17 +66,12 @@ class RetrievalAgent:
                 "rerank_scores": []
             }
 
-        # -----------------------------------------
-        # Generate query embedding
-        # -----------------------------------------
+        # Load embedding model only when needed
+        embedding_model = self.get_embedding_model()
 
-        query_embedding = self.model.encode(
+        query_embedding = embedding_model.encode(
             query
         ).tolist()
-
-        # -----------------------------------------
-        # Retrieve Top-K from ChromaDB
-        # -----------------------------------------
 
         results = self.collection.query(
             query_embeddings=[query_embedding],
@@ -65,18 +87,24 @@ class RetrievalAgent:
         metadata = results["metadatas"][0]
         distances = results["distances"][0]
 
-        # -----------------------------------------
-        # Cross Encoder Re-ranking
-        # -----------------------------------------
+        if len(documents) == 0:
+
+            return {
+                "documents": [],
+                "metadata": [],
+                "distances": [],
+                "rerank_scores": []
+            }
+
+        # Load CrossEncoder only when needed
+        reranker = self.get_reranker()
 
         pairs = [
             (query, doc)
             for doc in documents
         ]
 
-        scores = self.reranker.predict(
-            pairs
-        )
+        scores = reranker.predict(pairs)
 
         ranked = sorted(
             zip(
@@ -89,28 +117,12 @@ class RetrievalAgent:
             reverse=True
         )
 
-        # Keep Top-5 after reranking
         ranked = ranked[:5]
 
-        documents = [
-            item[1]
-            for item in ranked
-        ]
-
-        metadata = [
-            item[2]
-            for item in ranked
-        ]
-
-        distances = [
-            item[3]
-            for item in ranked
-        ]
-
-        rerank_scores = [
-            float(item[0])
-            for item in ranked
-        ]
+        documents = [x[1] for x in ranked]
+        metadata = [x[2] for x in ranked]
+        distances = [x[3] for x in ranked]
+        rerank_scores = [float(x[0]) for x in ranked]
 
         return {
             "documents": documents,
