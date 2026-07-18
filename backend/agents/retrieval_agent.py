@@ -1,13 +1,19 @@
-from sentence_transformers import SentenceTransformer
+from google import genai
+from google.genai import types
 import chromadb
+
+from backend.config import GOOGLE_API_KEY
+
+EMBEDDING_MODEL = "gemini-embedding-001"
 
 
 class RetrievalAgent:
 
     def __init__(self):
 
-        # Lazy-loaded embedding model
-        self.model = None
+        self.client_ai = genai.Client(
+            api_key=GOOGLE_API_KEY
+        )
 
         # ChromaDB
         self.client = chromadb.PersistentClient(
@@ -19,18 +25,20 @@ class RetrievalAgent:
         )
 
     # ---------------------------------------------------
-    # Lazy load embedding model
+    # Embed a query using Gemini
     # ---------------------------------------------------
 
-    def get_embedding_model(self):
+    def embed_query(self, query: str):
 
-        if self.model is None:
-
-            self.model = SentenceTransformer(
-                "paraphrase-MiniLM-L3-v2"
+        result = self.client_ai.models.embed_content(
+            model=EMBEDDING_MODEL,
+            contents=query,
+            config=types.EmbedContentConfig(
+                task_type="RETRIEVAL_QUERY"
             )
+        )
 
-        return self.model
+        return result.embeddings[0].values
 
     # ---------------------------------------------------
     # Retrieve Documents
@@ -51,11 +59,7 @@ class RetrievalAgent:
                 "rerank_scores": []
             }
 
-        embedding_model = self.get_embedding_model()
-
-        query_embedding = embedding_model.encode(
-            query
-        ).tolist()
+        query_embedding = self.embed_query(query)
 
         results = self.collection.query(
             query_embeddings=[query_embedding],

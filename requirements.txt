@@ -11,8 +11,6 @@ PyMuPDF
 
 chromadb
 
-sentence-transformers
-
 langchain-core
 langchain-text-splitters
 
