@@ -1,7 +1,7 @@
 from google import genai
-from langchain.memory import ConversationBufferMemory
 
 from backend.config import GOOGLE_API_KEY
+from backend.agents.memory_agent import MemoryAgent
 
 class QAAgent:
 
@@ -13,9 +13,7 @@ class QAAgent:
 
         self.retriever = retriever
 
-        self.memory = ConversationBufferMemory(
-            return_messages=False
-        )
+        self.memory = MemoryAgent()
 
     def answer(
         self,
@@ -38,12 +36,7 @@ class QAAgent:
                 "scores": []
             }
 
-        conversation = self.memory.load_memory_variables({})
-
-        history = conversation.get(
-            "history",
-            ""
-        )
+        history = self.memory.get_context()
 
         context = "\n\n".join(docs)
 
@@ -98,10 +91,7 @@ say:
             else "No response generated."
         )
 
-        self.memory.save_context(
-            {"input": question},
-            {"output": answer}
-        )
+        self.memory.add(question, answer)
 
         return {
 

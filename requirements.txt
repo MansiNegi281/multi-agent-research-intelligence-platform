@@ -11,8 +11,6 @@ PyMuPDF
 
 chromadb
 
-langchain
-langchain-core
 langchain-text-splitters
 
 numpy
