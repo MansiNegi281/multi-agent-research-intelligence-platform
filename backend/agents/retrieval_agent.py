@@ -1,4 +1,4 @@
-from sentence_transformers import SentenceTransformer, CrossEncoder
+from sentence_transformers import SentenceTransformer
 import chromadb
 
 
@@ -6,9 +6,8 @@ class RetrievalAgent:
 
     def __init__(self):
 
-        # Lazy-loaded models
+        # Lazy-loaded embedding model
         self.model = None
-        self.reranker = None
 
         # ChromaDB
         self.client = chromadb.PersistentClient(
@@ -28,24 +27,10 @@ class RetrievalAgent:
         if self.model is None:
 
             self.model = SentenceTransformer(
-                "all-MiniLM-L6-v2"
+                "paraphrase-MiniLM-L3-v2"
             )
 
         return self.model
-
-    # ---------------------------------------------------
-    # Lazy load CrossEncoder
-    # ---------------------------------------------------
-
-    def get_reranker(self):
-
-        if self.reranker is None:
-
-            self.reranker = CrossEncoder(
-                "cross-encoder/ms-marco-MiniLM-L-6-v2"
-            )
-
-        return self.reranker
 
     # ---------------------------------------------------
     # Retrieve Documents
@@ -54,7 +39,7 @@ class RetrievalAgent:
     def retrieve(
         self,
         query: str,
-        top_k: int = 15
+        top_k: int = 5
     ):
 
         if self.collection.count() == 0:
@@ -66,7 +51,6 @@ class RetrievalAgent:
                 "rerank_scores": []
             }
 
-        # Load embedding model only when needed
         embedding_model = self.get_embedding_model()
 
         query_embedding = embedding_model.encode(
@@ -96,33 +80,8 @@ class RetrievalAgent:
                 "rerank_scores": []
             }
 
-        # Load CrossEncoder only when needed
-        reranker = self.get_reranker()
-
-        pairs = [
-            (query, doc)
-            for doc in documents
-        ]
-
-        scores = reranker.predict(pairs)
-
-        ranked = sorted(
-            zip(
-                scores,
-                documents,
-                metadata,
-                distances
-            ),
-            key=lambda x: x[0],
-            reverse=True
-        )
-
-        ranked = ranked[:5]
-
-        documents = [x[1] for x in ranked]
-        metadata = [x[2] for x in ranked]
-        distances = [x[3] for x in ranked]
-        rerank_scores = [float(x[0]) for x in ranked]
+        # No CrossEncoder on Render Free
+        rerank_scores = [1.0] * len(documents)
 
         return {
             "documents": documents,
