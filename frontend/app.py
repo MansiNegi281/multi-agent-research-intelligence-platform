@@ -4,7 +4,7 @@ import requests
 
 BACKEND = os.getenv(
     "BACKEND_URL",
-    "http://127.0.0.1:8000"
+    "https://multi-agent-research-intelligence.onrender.com"
 )
 
 st.set_page_config(
