@@ -1,28 +1,24 @@
-# Virtual Environment
+# Virtual environment
 venv/
+
+# Environment variables
+.env
 
 # Python
 __pycache__/
 *.pyc
 
-# Environment Variables
-.env
-
 # macOS
 .DS_Store
 
-# ChromaDB
-backend/data/embeddings/
+# Generated data
+data/embeddings/
+data/papers/
+data/reports/
 
-# Uploaded PDFs
+# Uploaded files
 backend/uploads/
-
-# Streamlit
-.streamlit/
 
 # IDE
 .vscode/
 .idea/
-
-# Logs
-*.log
