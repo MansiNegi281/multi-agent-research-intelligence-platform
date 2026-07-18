@@ -1,3 +1,4 @@
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, UploadFile, File
 
 from backend.agents.search_agent import SearchAgent
@@ -9,8 +10,15 @@ from backend.agents.summary_agent import SummaryAgent
 from backend.agents.compare_agent import CompareAgent
 
 app = FastAPI(
-    title="Multi-Agent Research Assistant",
+    title="Multi-Agent Research Intelligence Platform",
     version="2.0.0"
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],   # We'll restrict this after deployment
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # =====================================================

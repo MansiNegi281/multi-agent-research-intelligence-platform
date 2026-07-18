@@ -1,10 +1,14 @@
+import os
 import streamlit as st
 import requests
 
-BACKEND = "http://127.0.0.1:8000"
+BACKEND = os.getenv(
+    "BACKEND_URL",
+    "http://127.0.0.1:8000"
+)
 
 st.set_page_config(
-    page_title="Multi-Agent Research Assistant",
+    page_title="Multi-Agent Research Intelligence Platform",
     layout="wide"
 )
 
@@ -107,7 +111,7 @@ if uploaded_pdf:
 # MAIN PAGE
 # ==========================================================
 
-st.title("Multi-Agent Research Assistant")
+st.title("Multi-Agent Research Intelligence Platform")
 
 st.write(
     "Search research papers, embed them into your knowledge base, and ask questions."
