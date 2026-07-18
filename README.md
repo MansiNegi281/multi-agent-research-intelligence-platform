@@ -1,4 +1,17 @@
-# 📚 Multi-Agent Research Assistant
+# 🚀 Multi-Agent Research Intelligence Platform
+
+An AI-powered research assistant that searches arXiv papers, embeds research documents into a vector database, and answers questions using Retrieval-Augmented Generation (RAG) with Gemini.
+
+## 🌐 Live Demo
+
+### Frontend (Streamlit)
+https://multi-agent-research-intelligence-platform-rsba9x4fyvtlzw262tk.streamlit.app/
+
+### Backend API (Render)
+https://multi-agent-research-intelligence.onrender.com
+
+### API Documentation
+https://multi-agent-research-intelligence.onrender.com/docs
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi)
@@ -11,6 +24,36 @@
 An end-to-end **AI-powered Multi-Agent Research Assistant** that enables users to search research papers, upload PDFs, build a vector knowledge base, generate AI summaries, compare research papers, and ask context-aware questions using **Retrieval-Augmented Generation (RAG)**.
 
 The system combines **FastAPI**, **Streamlit**, **Gemini 2.5 Flash**, **ChromaDB**, **Sentence Transformers**, and **Cross-Encoder Re-ranking** to deliver accurate, explainable, and conversational responses from research papers.
+
+---
+
+## ✨ Project Highlights
+
+- 🤖 Multi-Agent AI architecture
+- 🔍 Semantic search over research papers
+- 📄 PDF ingestion and processing
+- 🧠 Retrieval-Augmented Generation (RAG)
+- 📊 AI-powered paper comparison
+- 📝 AI summarization
+- 💬 Conversational memory
+- ⚡ Cross-Encoder re-ranking
+- 🌐 Full-stack deployment (FastAPI + Streamlit)
+
+---
+
+## ☁️ Deployment
+
+Frontend:
+- Streamlit Community Cloud
+
+Backend:
+- Render
+
+Vector Database:
+- ChromaDB (Persistent Storage)
+
+LLM:
+- Google Gemini 2.5 Flash
 
 ---
 
@@ -93,45 +136,22 @@ Scholar API                    Agent
 
 ---
 
-# 🛠️ Tech Stack
-
-## Backend
+## 🛠️ Tech Stack
 
 - Python
 - FastAPI
-- Uvicorn
-
-## Frontend
-
 - Streamlit
-
-## AI & NLP
-
 - Google Gemini 2.5 Flash
-- Sentence Transformers
-- CrossEncoder
-- LangChain Memory
-
-## Vector Database
-
 - ChromaDB
-
-## PDF Processing
-
+- Sentence Transformers
+- PyTorch
+- arXiv API
 - PyMuPDF
-- PyPDF2
-
-## APIs
-
-- Semantic Scholar API
-- Gemini API
-
----
 
 # 📂 Project Structure
 
 ```
-multi-agent-research-assistant/
+multi-agent-research-intelligence/
 
 │
 
@@ -168,9 +188,8 @@ multi-agent-research-assistant/
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/multi-agent-research-assistant.git
-
-cd multi-agent-research-assistant
+git clone https://github.com/MansiNegi281/multi-agent-research-intelligence-platform.git
+cd multi-agent-research-intelligence-platform
 ```
 
 ---
@@ -310,38 +329,44 @@ The AI generates a comparison highlighting methodologies, findings, and contribu
 # 📸 Screenshots
 
 ### Home Page
+<img width="1465" height="799" alt="image" src="https://github.com/user-attachments/assets/46d28f6c-e9ad-4366-a4b3-ab1e4f41dbaa" />
 
-_Add screenshot here_
 
 ---
 
 ### Paper Search
 
-_Add screenshot here_
+<img width="1452" height="762" alt="image" src="https://github.com/user-attachments/assets/9745d7af-c940-4a43-9ff8-5373ce788339" />
 
 ---
 
 ### AI Summary
 
-_Add screenshot here_
+<img width="1461" height="788" alt="image" src="https://github.com/user-attachments/assets/8387af68-153f-4299-9cd4-066a8bca8da7" />
+<img width="1455" height="710" alt="image" src="https://github.com/user-attachments/assets/4b4d4810-c6f2-4575-9c9c-e4d310eb2f7b" />
+
+
 
 ---
 
 ### Paper Comparison
 
-_Add screenshot here_
+<img width="1125" height="303" alt="image" src="https://github.com/user-attachments/assets/7c2a0033-d36b-42e9-8c89-a8ad410b4f00" />
+
 
 ---
 
 ### Question Answering
 
-_Add screenshot here_
+<img width="1450" height="731" alt="image" src="https://github.com/user-attachments/assets/b2751a09-1a2f-4f22-8173-01aa2b7ca2d6" />
+
 
 ---
 
 ### Retrieved Evidence
 
-_Add screenshot here_
+<img width="1470" height="772" alt="image" src="https://github.com/user-attachments/assets/55cdd986-659d-458c-b448-2f3ef1256f9e" />
+
 
 ---
 
